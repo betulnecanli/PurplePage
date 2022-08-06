@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    tools:context=".ui.SubjectsFragment">
+    tools:context=".ui.subject.SubjectsFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout

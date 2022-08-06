@@ -12,5 +12,7 @@ constructor(private val dao: SubjectsDao){
 
     suspend fun updateSubject(subject: Subjects) = dao.updateSubject(subject)
 
+    suspend fun deleteSubject(subject : Subjects) = dao.deleteSubject(subject)
+
     fun getAllSubjects() = dao.getAllSubjects()
 }

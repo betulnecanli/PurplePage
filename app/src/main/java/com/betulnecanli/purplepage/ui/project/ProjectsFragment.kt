@@ -1,4 +1,4 @@
-package com.betulnecanli.purplepage.ui
+package com.betulnecanli.purplepage.ui.project
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

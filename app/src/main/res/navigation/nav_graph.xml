@@ -7,17 +7,21 @@
 
     <fragment
         android:id="@+id/subjectsFragment"
-        android:name="com.betulnecanli.purplepage.ui.SubjectsFragment"
+        android:name="com.betulnecanli.purplepage.ui.subject.SubjectsFragment"
         android:label="Subjects"
         tools:layout="@layout/fragment_subjects" />
     <fragment
         android:id="@+id/projectsFragment"
-        android:name="com.betulnecanli.purplepage.ui.ProjectsFragment"
+        android:name="com.betulnecanli.purplepage.ui.project.ProjectsFragment"
         android:label="Projects"
         tools:layout="@layout/fragment_projects" />
     <fragment
         android:id="@+id/goalsFragment"
-        android:name="com.betulnecanli.purplepage.ui.GoalsFragment"
+        android:name="com.betulnecanli.purplepage.ui.goal.GoalsFragment"
         android:label="Goals"
         tools:layout="@layout/fragment_goals" />
+    <dialog
+        android:id="@+id/addEditSubject"
+        android:name="com.betulnecanli.purplepage.ui.subject.AddEditSubject"
+        android:label="AddEditSubject" /><action android:id="@+id/action_global_addEditSubject" app:destination="@id/addEditSubject"/>
 </navigation>

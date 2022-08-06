@@ -14,6 +14,8 @@ interface SubjectsDao {
     @Update
     suspend fun updateSubject(subject: Subjects)
 
+    @Delete
+    suspend fun deleteSubject(subject : Subjects)
 
     @Query("SELECT * FROM subjectsTable ORDER BY subjectTitle ASC")
     fun getAllSubjects(): Flow<List<Subjects>>

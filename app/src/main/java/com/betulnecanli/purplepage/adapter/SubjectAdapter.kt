@@ -9,9 +9,46 @@ import androidx.recyclerview.widget.RecyclerView
 import com.betulnecanli.purplepage.databinding.SubjectItemBinding
 import com.betulnecanli.purplepage.model.Subjects
 
-class SubjectAdapter : RecyclerView.Adapter<SubjectAdapter.SubjectViewHolder>() {
+class SubjectAdapter(
+    private val listener :OnItemClickListener
+) : RecyclerView.Adapter<SubjectAdapter.SubjectViewHolder>() {
 
-    inner class SubjectViewHolder(val binding : SubjectItemBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class SubjectViewHolder(
+        val binding : SubjectItemBinding
+        ) : RecyclerView.ViewHolder(binding.root)
+    {
+        init{
+            binding.apply {
+                root.setOnClickListener {
+                    val position = adapterPosition
+                    if(position != RecyclerView.NO_POSITION){
+                        val sub = differ.currentList[position]
+                        listener.onItemClick(sub)
+                    }
+                }
+
+                subjectCheck.setOnClickListener {
+                    val position = adapterPosition
+                    if(position != RecyclerView.NO_POSITION){
+                        val sub = differ.currentList[position]
+                        listener.onCheckBoxClick(sub, subjectCheck.isChecked)
+                    }
+                }
+
+            }
+        }
+
+
+
+        fun bind(subject : Subjects ){
+            binding.apply {
+                subjectText.text = subject.subjectTitle
+                subjectCheck.isChecked = subject.isChecked
+
+            }
+        }
+
+    }
     private val differCallback = object : DiffUtil.ItemCallback<Subjects>() {
 
         override fun areItemsTheSame(oldItem: Subjects, newItem: Subjects): Boolean {
@@ -41,27 +78,16 @@ class SubjectAdapter : RecyclerView.Adapter<SubjectAdapter.SubjectViewHolder>() 
 
     override fun onBindViewHolder(holder: SubjectViewHolder, position: Int) {
        val currentSubject = mSubject[position]
+        holder.bind(currentSubject)
 
-        holder.binding.apply {
-            subjectText.text = currentSubject.subjectTitle
-            subjectCheck.isChecked = currentSubject.isChecked
-        }
-
-        holder.binding.subjectCheck.apply {
-            setOnClickListener {
-
-                holder.binding.apply {
-                    if(isChecked){
-
-                        subjectText.paintFlags = subjectText.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-
-                    }else{
-                        subjectText.paintFlags = subjectText.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
-                    }
-                }
-            }
-        }
     }
 
     override fun getItemCount() = mSubject.size
+
+
+
+    interface OnItemClickListener{
+        fun onItemClick(subject : Subjects)
+        fun onCheckBoxClick(subject: Subjects, isChecked : Boolean)
+    }
 }

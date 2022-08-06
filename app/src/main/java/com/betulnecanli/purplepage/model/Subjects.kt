@@ -7,5 +7,5 @@ import androidx.room.PrimaryKey
 data class Subjects(
     @PrimaryKey(autoGenerate = true) val uid: Int,
     val subjectTitle : String,
-    val isChecked : Boolean
+    val isChecked : Boolean = false
     )

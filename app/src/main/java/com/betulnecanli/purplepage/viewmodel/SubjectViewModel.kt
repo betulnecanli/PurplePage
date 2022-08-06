@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.betulnecanli.purplepage.model.Subjects
 import com.betulnecanli.purplepage.repository.SubjectsRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -13,17 +15,42 @@ import javax.inject.Inject
 @HiltViewModel
 class SubjectViewModel
 @Inject
-constructor(val subjectRepo: SubjectsRepo) : ViewModel()
-{
+constructor(val subjectRepo: SubjectsRepo) : ViewModel() {
+
+
+    private val subjectEventChannel = Channel<SubjectEvents>()
+    val subjectEvent = subjectEventChannel.receiveAsFlow()
+
+
     fun insertSubjects(subject: Subjects) = viewModelScope.launch {
         subjectRepo.insertSubject(subject)
     }
 
-    fun updateSubjects(subject: Subjects) = viewModelScope.launch {
-        subjectRepo.updateSubject(subject)
+    fun onSubjectCheckChanged(subject: Subjects, completed : Boolean) = viewModelScope.launch {
+        subjectRepo.updateSubject(subject.copy(isChecked = completed))
+    }
+
+    fun deleteSubject(subject : Subjects) = viewModelScope.launch {
+        subjectRepo.deleteSubject(subject)
+        subjectEventChannel.send(SubjectEvents.ShowUndoDeleteMessage(subject))
     }
 
     val getAllSubjects = subjectRepo.getAllSubjects().asLiveData()
 
 
+    fun navigateToAddScreen() = viewModelScope.launch {
+        subjectEventChannel.send(SubjectEvents.NavigateToAddScreen)
+    }
+
+
+    sealed class SubjectEvents{
+
+    object NavigateToAddScreen: SubjectEvents()
+    data class NavigateToEditScreen(val subject : Subjects) : SubjectEvents()
+    data class ShowUndoDeleteMessage(val subject : Subjects) : SubjectEvents()
+
+
+
+
+    }
 }
