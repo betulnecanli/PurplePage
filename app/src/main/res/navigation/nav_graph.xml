@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/subjectsFragment">
+
+    <fragment
+        android:id="@+id/subjectsFragment"
+        android:name="com.betulnecanli.purplepage.ui.SubjectsFragment"
+        android:label="Subjects"
+        tools:layout="@layout/fragment_subjects" />
+    <fragment
+        android:id="@+id/projectsFragment"
+        android:name="com.betulnecanli.purplepage.ui.ProjectsFragment"
+        android:label="Projects"
+        tools:layout="@layout/fragment_projects" />
+    <fragment
+        android:id="@+id/goalsFragment"
+        android:name="com.betulnecanli.purplepage.ui.GoalsFragment"
+        android:label="Goals"
+        tools:layout="@layout/fragment_goals" />
+</navigation>
