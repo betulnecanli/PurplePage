@@ -23,5 +23,12 @@
     <dialog
         android:id="@+id/addEditSubject"
         android:name="com.betulnecanli.purplepage.ui.subject.AddEditSubject"
-        android:label="AddEditSubject" /><action android:id="@+id/action_global_addEditSubject" app:destination="@id/addEditSubject"/>
+        android:label="AddEditSubject" >
+        <argument
+            android:name="subject"
+            app:argType="com.betulnecanli.purplepage.model.Subjects"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </dialog>
+    <action android:id="@+id/action_global_addEditSubject" app:destination="@id/addEditSubject" />
 </navigation>

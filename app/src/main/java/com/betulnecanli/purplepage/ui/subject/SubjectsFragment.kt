@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -20,6 +21,7 @@ import com.betulnecanli.purplepage.databinding.FragmentSubjectsBinding
 import com.betulnecanli.purplepage.model.Subjects
 import com.betulnecanli.purplepage.utils.exhaustive
 import com.betulnecanli.purplepage.viewmodel.SubjectViewModel
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -50,6 +52,13 @@ class SubjectsFragment : Fragment(R.layout.fragment_subjects), SubjectAdapter.On
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        setFragmentResultListener("add_edit_request"){
+            _, bundle ->
+            val result  = bundle.getInt("add_edit_request")
+            viewModel.onAddEditResult(result)
+        }
+
 
         setupRcy()
 
@@ -82,11 +91,25 @@ class SubjectsFragment : Fragment(R.layout.fragment_subjects), SubjectAdapter.On
             viewModel.subjectEvent.collect{event ->
                 when(event){
                     is SubjectViewModel.SubjectEvents.NavigateToAddScreen -> {
-                        val action = SubjectsFragmentDirections.actionGlobalAddEditSubject()
+                        val action = SubjectsFragmentDirections.actionGlobalAddEditSubject(null)
                         findNavController().navigate(action)
                     }
-                    is SubjectViewModel.SubjectEvents.NavigateToEditScreen -> TODO()
-                    is SubjectViewModel.SubjectEvents.ShowUndoDeleteMessage -> TODO()
+                    is SubjectViewModel.SubjectEvents.NavigateToEditScreen -> {
+                        val action = SubjectsFragmentDirections.actionGlobalAddEditSubject(event.subject)
+                        findNavController().navigate(action)
+                    }
+                    is SubjectViewModel.SubjectEvents.ShowUndoDeleteMessage ->{
+                        Snackbar.make(requireView(),
+                        "Subject Deleted",
+                        Snackbar.LENGTH_LONG).setAction("UNDO"){
+                            viewModel.clickedUndo(event.subject)
+                        }.show()
+                    }
+                    is SubjectViewModel.SubjectEvents.ShowSubjectSavedConfirmationMessage -> {
+                        Snackbar.make(requireView(),
+                        event.msg,
+                        Snackbar.LENGTH_SHORT).show()
+                    }
                 }.exhaustive
             }
         }
@@ -119,7 +142,7 @@ class SubjectsFragment : Fragment(R.layout.fragment_subjects), SubjectAdapter.On
     }
 
     override fun onItemClick(subject: Subjects) {
-        TODO("Not yet implemented")
+        viewModel.navigateToAddScreen()
     }
 
     override fun onCheckBoxClick(subject: Subjects, isChecked: Boolean) {

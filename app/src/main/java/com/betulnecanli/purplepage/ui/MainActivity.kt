@@ -1,5 +1,6 @@
 package com.betulnecanli.purplepage.ui
 
+import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -44,3 +45,6 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
     }
 }
+
+const val ADD_RESULT_OK = Activity.RESULT_FIRST_USER
+const val EDIT_RESULT_OK = Activity.RESULT_FIRST_USER + 1
