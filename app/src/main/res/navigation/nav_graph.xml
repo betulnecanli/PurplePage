@@ -26,7 +26,7 @@
         android:label="AddEditSubject" >
         <argument
             android:name="subject"
-            app:argType="com.betulnecanli.purplepage.model.Subjects"
+            app:argType="com.betulnecanli.purplepage.data.model.Subjects"
             app:nullable="true"
             android:defaultValue="@null" />
     </dialog>

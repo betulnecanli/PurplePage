@@ -1,13 +1,12 @@
 package com.betulnecanli.purplepage.adapter
 
-import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.betulnecanli.purplepage.databinding.SubjectItemBinding
-import com.betulnecanli.purplepage.model.Subjects
+import com.betulnecanli.purplepage.data.model.Subjects
 
 class SubjectAdapter(
     private val listener :OnItemClickListener

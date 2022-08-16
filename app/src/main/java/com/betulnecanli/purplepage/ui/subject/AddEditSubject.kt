@@ -4,17 +4,12 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.EditText
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.betulnecanli.purplepage.R
-import com.betulnecanli.purplepage.model.Subjects
+import com.betulnecanli.purplepage.data.model.Subjects
 import com.betulnecanli.purplepage.viewmodel.AddEditSubjectViewModel
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -22,13 +17,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class AddEditSubject : DialogFragment() {
 
     private val viewModel : AddEditSubjectViewModel by viewModels()
-
-
-
-
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-      
+
         val builder = AlertDialog.Builder(context)
         val inflater = layoutInflater
         val dialogLayout = inflater.inflate(R.layout.add_subject_layout,null)
@@ -36,6 +26,7 @@ class AddEditSubject : DialogFragment() {
 
         with(builder){
             setTitle("Enter some Subject!")
+            editText.setText(viewModel.subjectTitle)
             setPositiveButton("OK"){
                     dialog, which ->
                 val subjectName = editText.text.toString()

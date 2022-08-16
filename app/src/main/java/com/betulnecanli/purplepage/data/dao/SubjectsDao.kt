@@ -1,7 +1,7 @@
-package com.betulnecanli.purplepage.dao
+package com.betulnecanli.purplepage.data.dao
 
 import androidx.room.*
-import com.betulnecanli.purplepage.model.Subjects
+import com.betulnecanli.purplepage.data.model.Subjects
 import kotlinx.coroutines.flow.Flow
 
 

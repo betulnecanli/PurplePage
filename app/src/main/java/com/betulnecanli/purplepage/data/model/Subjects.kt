@@ -1,4 +1,4 @@
-package com.betulnecanli.purplepage.model
+package com.betulnecanli.purplepage.data.model
 
 import android.os.Parcelable
 import androidx.room.Entity
@@ -10,6 +10,6 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Subjects(
     @PrimaryKey(autoGenerate = true) val uid: Int = 0,
-    val subjectTitle : String,
-    val isChecked : Boolean = false
+    val subjectTitle: String,
+    val isChecked: Boolean = false
     ):Parcelable

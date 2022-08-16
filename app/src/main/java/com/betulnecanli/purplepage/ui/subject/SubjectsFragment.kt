@@ -1,13 +1,10 @@
 package com.betulnecanli.purplepage.ui.subject
 
-import android.app.AlertDialog
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -18,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.betulnecanli.purplepage.R
 import com.betulnecanli.purplepage.adapter.SubjectAdapter
 import com.betulnecanli.purplepage.databinding.FragmentSubjectsBinding
-import com.betulnecanli.purplepage.model.Subjects
+import com.betulnecanli.purplepage.data.model.Subjects
 import com.betulnecanli.purplepage.utils.exhaustive
 import com.betulnecanli.purplepage.viewmodel.SubjectViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -142,7 +139,7 @@ class SubjectsFragment : Fragment(R.layout.fragment_subjects), SubjectAdapter.On
     }
 
     override fun onItemClick(subject: Subjects) {
-        viewModel.navigateToAddScreen()
+        viewModel.navigateToEditScreen(subject)
     }
 
     override fun onCheckBoxClick(subject: Subjects, isChecked: Boolean) {

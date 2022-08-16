@@ -3,7 +3,7 @@ package com.betulnecanli.purplepage.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.betulnecanli.purplepage.model.Subjects
+import com.betulnecanli.purplepage.data.model.Subjects
 import com.betulnecanli.purplepage.repository.SubjectsRepo
 import com.betulnecanli.purplepage.ui.ADD_RESULT_OK
 import com.betulnecanli.purplepage.ui.EDIT_RESULT_OK
@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SubjectViewModel
 @Inject
-constructor(val subjectRepo: SubjectsRepo) : ViewModel() {
+constructor(private val subjectRepo: SubjectsRepo) : ViewModel() {
 
 
     private val subjectEventChannel = Channel<SubjectEvents>()
@@ -43,6 +43,9 @@ constructor(val subjectRepo: SubjectsRepo) : ViewModel() {
     fun navigateToAddScreen() = viewModelScope.launch {
         subjectEventChannel.send(SubjectEvents.NavigateToAddScreen)
     }
+    fun navigateToEditScreen(subject: Subjects) = viewModelScope.launch {
+        subjectEventChannel.send(SubjectEvents.NavigateToEditScreen(subject))
+    }
 
     fun clickedUndo(subject: Subjects) = viewModelScope.launch {
         subjectRepo.insertSubject(subject)
@@ -56,7 +59,7 @@ constructor(val subjectRepo: SubjectsRepo) : ViewModel() {
         }
     }
 
-    fun showSubjectSavedConfirmationMessage(msg : String) = viewModelScope.launch {
+    private fun showSubjectSavedConfirmationMessage(msg : String) = viewModelScope.launch {
         subjectEventChannel.send(SubjectEvents.ShowSubjectSavedConfirmationMessage(msg))
     }
 

@@ -2,7 +2,7 @@ package com.betulnecanli.purplepage.di
 
 import android.content.Context
 import androidx.room.Room
-import com.betulnecanli.purplepage.db.SubjectsDB
+import com.betulnecanli.purplepage.data.db.SubjectsDB
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
