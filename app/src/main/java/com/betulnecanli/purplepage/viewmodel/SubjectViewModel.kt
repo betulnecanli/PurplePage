@@ -1,5 +1,6 @@
 package com.betulnecanli.purplepage.viewmodel
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
@@ -24,21 +25,40 @@ constructor(private val subjectRepo: SubjectsRepo) : ViewModel() {
     val subjectEvent = subjectEventChannel.receiveAsFlow()
 
 
+
+    val dinlenenVeri : MutableLiveData<Int> by lazy{
+        MutableLiveData<Int>()
+    }
+
+    var subjectNum = 0
+
     fun insertSubjects(subject: Subjects) = viewModelScope.launch {
         subjectRepo.insertSubject(subject)
     }
 
     fun onSubjectCheckChanged(subject: Subjects, completed : Boolean) = viewModelScope.launch {
         subjectRepo.updateSubject(subject.copy(isChecked = completed))
+        if(completed){
+            subjectNum = 1
+            dinlenenVeri.value = subjectNum
+        }
+        else{
+            subjectNum = -1
+            dinlenenVeri.value = subjectNum
+        }
     }
 
     fun deleteSubject(subject : Subjects) = viewModelScope.launch {
         subjectRepo.deleteSubject(subject)
         subjectEventChannel.send(SubjectEvents.ShowUndoDeleteMessage(subject))
+        if(subject.isChecked){
+            subjectNum = -1
+            dinlenenVeri.value = subjectNum
+        }
+
     }
 
     val getAllSubjects = subjectRepo.getAllSubjects().asLiveData()
-
 
     fun navigateToAddScreen() = viewModelScope.launch {
         subjectEventChannel.send(SubjectEvents.NavigateToAddScreen)
@@ -49,6 +69,11 @@ constructor(private val subjectRepo: SubjectsRepo) : ViewModel() {
 
     fun clickedUndo(subject: Subjects) = viewModelScope.launch {
         subjectRepo.insertSubject(subject)
+        if(subject.isChecked){
+            subjectNum = 1
+            dinlenenVeri.value = subjectNum
+        }
+
     }
 
     fun onAddEditResult(result : Int){

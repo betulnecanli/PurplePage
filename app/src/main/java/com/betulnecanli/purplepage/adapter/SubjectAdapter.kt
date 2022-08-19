@@ -31,6 +31,7 @@ class SubjectAdapter(
                     if(position != RecyclerView.NO_POSITION){
                         val sub = differ.currentList[position]
                         listener.onCheckBoxClick(sub, subjectCheck.isChecked)
+
                     }
                 }
 
@@ -44,6 +45,7 @@ class SubjectAdapter(
                 subjectText.text = subject.subjectTitle
                 subjectCheck.isChecked = subject.isChecked
                 subjectText.paint.isStrikeThruText = subject.isChecked
+
 
             }
         }
