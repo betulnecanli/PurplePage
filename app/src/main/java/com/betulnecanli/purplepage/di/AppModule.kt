@@ -2,6 +2,7 @@ package com.betulnecanli.purplepage.di
 
 import android.content.Context
 import androidx.room.Room
+import com.betulnecanli.purplepage.data.db.GoalsDB
 import com.betulnecanli.purplepage.data.db.ProjectsDB
 import com.betulnecanli.purplepage.data.db.SubjectsDB
 import dagger.Module
@@ -51,6 +52,23 @@ object AppModule {
     fun provideProjectDao(
         db : ProjectsDB
     ) = db.projectDao()
+
+
+    @Singleton
+    @Provides
+    fun provideGoalDb(
+        @ApplicationContext context: Context
+    ) = Room.databaseBuilder(
+        context,
+        GoalsDB::class.java,
+        "goals_db"
+    ).build()
+
+    @Singleton
+    @Provides
+    fun provideGoalDao(
+        db : GoalsDB
+    ) = db.goalDao()
 
 
     @ApplicationScope

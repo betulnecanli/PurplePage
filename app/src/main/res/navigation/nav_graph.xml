@@ -42,4 +42,15 @@
             android:defaultValue="@null" />
     </dialog>
     <action android:id="@+id/action_global_addEditProject" app:destination="@id/addEditProject" />
+    <dialog
+        android:id="@+id/addEditGoal"
+        android:name="com.betulnecanli.purplepage.ui.goal.AddEditGoal"
+        android:label="AddEditGoal" >
+        <argument
+            android:name="goal"
+            app:argType="com.betulnecanli.purplepage.data.model.Goals"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </dialog>
+    <action android:id="@+id/action_global_addEditGoal" app:destination="@id/addEditGoal" />
 </navigation>

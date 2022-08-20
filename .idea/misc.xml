@@ -4,11 +4,13 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/ASUS/Desktop/PurplePage/app/src/main/res/layout/activity_main.xml" value="0.16614583333333333" />
-        <entry key="..\:/Users/ASUS/Desktop/PurplePage/app/src/main/res/layout/add_project_layout.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/ASUS/Desktop/PurplePage/app/src/main/res/layout/add_goal_layout.xml" value="0.5" />
+        <entry key="..\:/Users/ASUS/Desktop/PurplePage/app/src/main/res/layout/add_project_layout.xml" value="0.14" />
         <entry key="..\:/Users/ASUS/Desktop/PurplePage/app/src/main/res/layout/add_subject_layout.xml" value="0.22447916666666667" />
         <entry key="..\:/Users/ASUS/Desktop/PurplePage/app/src/main/res/layout/fragment_goals.xml" value="0.16614583333333333" />
         <entry key="..\:/Users/ASUS/Desktop/PurplePage/app/src/main/res/layout/fragment_projects.xml" value="0.16614583333333333" />
         <entry key="..\:/Users/ASUS/Desktop/PurplePage/app/src/main/res/layout/fragment_subjects.xml" value="0.22" />
+        <entry key="..\:/Users/ASUS/Desktop/PurplePage/app/src/main/res/layout/goal_item.xml" value="0.16350531107739" />
         <entry key="..\:/Users/ASUS/Desktop/PurplePage/app/src/main/res/layout/project_item.xml" value="0.22447916666666667" />
         <entry key="..\:/Users/ASUS/Desktop/PurplePage/app/src/main/res/layout/subject_item.xml" value="0.22447916666666667" />
         <entry key="..\:/Users/ASUS/Desktop/PurplePage/app/src/main/res/menu/main_menu.xml" value="0.16614583333333333" />
