@@ -39,10 +39,6 @@ constructor(private val subjectRepo: SubjectsRepo,
 
     var subjectNum = 0
 
-    fun insertSubjects(subject: Subjects) = viewModelScope.launch {
-        subjectRepo.insertSubject(subject)
-    }
-
     fun onSubjectCheckChanged(subject: Subjects, completed : Boolean) = viewModelScope.launch {
         subjectRepo.updateSubject(subject.copy(isChecked = completed))
         if(completed){
