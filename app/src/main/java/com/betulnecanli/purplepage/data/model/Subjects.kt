@@ -5,7 +5,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
-
 @Entity(tableName = "subjectsTable")
 @Parcelize
 data class Subjects(

@@ -7,6 +7,5 @@ import com.betulnecanli.purplepage.data.model.Subjects
 
 @Database(entities = [Subjects::class], version = 1, exportSchema = false)
 abstract class SubjectsDB: RoomDatabase() {
-
     abstract fun subjectsDao(): SubjectsDao
 }

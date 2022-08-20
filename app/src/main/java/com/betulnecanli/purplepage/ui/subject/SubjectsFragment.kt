@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isEmpty
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -22,6 +23,7 @@ import com.betulnecanli.purplepage.adapter.SubjectAdapter
 import com.betulnecanli.purplepage.databinding.FragmentSubjectsBinding
 import com.betulnecanli.purplepage.data.model.Subjects
 import com.betulnecanli.purplepage.utils.exhaustive
+import com.betulnecanli.purplepage.utils.onQueryTextChanged
 import com.betulnecanli.purplepage.viewmodel.SubjectViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,7 +42,7 @@ class SubjectsFragment : Fragment(R.layout.fragment_subjects), SubjectAdapter.On
     lateinit var editor : SharedPreferences.Editor
     private var subjectDone : Int = 0
     private var listLength : Int = 0
-
+    private var isSearching: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,6 +63,20 @@ class SubjectsFragment : Fragment(R.layout.fragment_subjects), SubjectAdapter.On
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //search
+        binding.subjectsSearch.onQueryTextChanged {
+
+                viewModel.searchQuery.value = it
+        }
+        val pendingQuery = viewModel.searchQuery.value
+        if(pendingQuery != null && pendingQuery.isNotEmpty()){
+            binding.subjectsSearch.setQuery(pendingQuery,false)
+        }
+
+        isSearching = (binding.subjectsSearch.isIconified)
+
+
 
         preferences = requireActivity().getSharedPreferences("doneSubjects", Context.MODE_PRIVATE)
         editor = preferences.edit()
@@ -169,6 +185,11 @@ class SubjectsFragment : Fragment(R.layout.fragment_subjects), SubjectAdapter.On
     }
 
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding.subjectsSearch.setOnQueryTextListener(null)
+    }
+
     private fun setupRcy(){
         subjectAdapter = SubjectAdapter(this)
         binding.subjectsRcy.apply {
@@ -176,14 +197,16 @@ class SubjectsFragment : Fragment(R.layout.fragment_subjects), SubjectAdapter.On
             adapter=subjectAdapter
         }
 
+
         viewModel.getAllSubjects.observe(requireActivity()){ listSubjects ->
                     updateUI(listSubjects)
                     subjectAdapter.mSubject = listSubjects
                     listLength = listSubjects.size
-                    editor.putInt("sNum",listSubjects.size)
-                    editor.apply()
-                    Log.d("listenumm", "$listLength")
-                if(listLength!=0){
+                            Log.d("yeterrr", "${listLength}")
+                            editor.putInt("sNum",listSubjects.size)
+                            editor.apply()
+
+                    if(listLength!=0){
                         subjectDone = ((preferences.getInt("doneSub",0))*100)/listLength
                         //subjectDone = preferences.getInt("doneSub",0)
                         binding.progressPercent.setText("$subjectDone%")
@@ -203,6 +226,13 @@ class SubjectsFragment : Fragment(R.layout.fragment_subjects), SubjectAdapter.On
                     }
 
 
+        }
+
+
+        viewModel.searchSubject.observe(requireActivity()){
+                listSubjects ->
+            updateUI(listSubjects)
+            subjectAdapter.mSubject = listSubjects
         }
     }
 

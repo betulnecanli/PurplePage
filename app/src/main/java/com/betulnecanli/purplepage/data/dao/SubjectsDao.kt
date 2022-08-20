@@ -19,4 +19,7 @@ interface SubjectsDao {
 
     @Query("SELECT * FROM subjectsTable ORDER BY subjectTitle ASC")
     fun getAllSubjects(): Flow<List<Subjects>>
+
+    @Query("SELECT * FROM subjectsTable WHERE subjectTitle LIKE '%' || :query  || '%' ORDER BY subjectTitle ASC")
+    fun searchSubject(query: String) : Flow<List<Subjects>>
 }

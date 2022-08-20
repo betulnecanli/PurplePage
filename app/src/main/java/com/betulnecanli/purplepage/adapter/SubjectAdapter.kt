@@ -13,7 +13,7 @@ class SubjectAdapter(
 ) : RecyclerView.Adapter<SubjectAdapter.SubjectViewHolder>() {
 
     inner class SubjectViewHolder(
-        val binding : SubjectItemBinding
+        private val binding : SubjectItemBinding
         ) : RecyclerView.ViewHolder(binding.root)
     {
         init{

@@ -1,15 +1,13 @@
 package com.betulnecanli.purplepage.viewmodel
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.betulnecanli.purplepage.data.model.Subjects
 import com.betulnecanli.purplepage.repository.SubjectsRepo
 import com.betulnecanli.purplepage.ui.ADD_RESULT_OK
 import com.betulnecanli.purplepage.ui.EDIT_RESULT_OK
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,11 +16,20 @@ import javax.inject.Inject
 @HiltViewModel
 class SubjectViewModel
 @Inject
-constructor(private val subjectRepo: SubjectsRepo) : ViewModel() {
+constructor(private val subjectRepo: SubjectsRepo,
+            private val state : SavedStateHandle
+            ) : ViewModel() {
 
 
     private val subjectEventChannel = Channel<SubjectEvents>()
     val subjectEvent = subjectEventChannel.receiveAsFlow()
+
+
+    val searchQuery = state.getLiveData("subjectSearchQuery","")
+
+    private val subjectFlow = searchQuery.asFlow().flatMapLatest {query ->
+        subjectRepo.searchSubject(query)
+    }
 
 
 
@@ -41,9 +48,13 @@ constructor(private val subjectRepo: SubjectsRepo) : ViewModel() {
         if(completed){
             subjectNum = 1
             dinlenenVeri.value = subjectNum
+            subjectNum=0
+            dinlenenVeri.value = subjectNum
         }
         else{
             subjectNum = -1
+            dinlenenVeri.value = subjectNum
+            subjectNum = 0
             dinlenenVeri.value = subjectNum
         }
     }
@@ -54,11 +65,15 @@ constructor(private val subjectRepo: SubjectsRepo) : ViewModel() {
         if(subject.isChecked){
             subjectNum = -1
             dinlenenVeri.value = subjectNum
+            subjectNum = 0
+            dinlenenVeri.value = subjectNum
         }
 
     }
 
+
     val getAllSubjects = subjectRepo.getAllSubjects().asLiveData()
+    val searchSubject = subjectFlow.asLiveData()
 
     fun navigateToAddScreen() = viewModelScope.launch {
         subjectEventChannel.send(SubjectEvents.NavigateToAddScreen)
@@ -71,6 +86,8 @@ constructor(private val subjectRepo: SubjectsRepo) : ViewModel() {
         subjectRepo.insertSubject(subject)
         if(subject.isChecked){
             subjectNum = 1
+            dinlenenVeri.value = subjectNum
+            subjectNum = 0
             dinlenenVeri.value = subjectNum
         }
 
