@@ -37,16 +37,11 @@ class SubjectAdapter(
 
             }
         }
-
-
-
         fun bind(subject : Subjects ){
             binding.apply {
                 subjectText.text = subject.subjectTitle
                 subjectCheck.isChecked = subject.isChecked
                 subjectText.paint.isStrikeThruText = subject.isChecked
-
-
             }
         }
 

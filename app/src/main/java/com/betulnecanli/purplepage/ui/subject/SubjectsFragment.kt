@@ -42,7 +42,7 @@ class SubjectsFragment : Fragment(R.layout.fragment_subjects), SubjectAdapter.On
     lateinit var editor : SharedPreferences.Editor
     private var subjectDone : Int = 0
     private var listLength : Int = 0
-    private var isSearching: Boolean = false
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -66,17 +66,12 @@ class SubjectsFragment : Fragment(R.layout.fragment_subjects), SubjectAdapter.On
 
         //search
         binding.subjectsSearch.onQueryTextChanged {
-
-                viewModel.searchQuery.value = it
+            viewModel.searchQuery.value = it
         }
         val pendingQuery = viewModel.searchQuery.value
         if(pendingQuery != null && pendingQuery.isNotEmpty()){
             binding.subjectsSearch.setQuery(pendingQuery,false)
         }
-
-        isSearching = (binding.subjectsSearch.isIconified)
-
-
 
         preferences = requireActivity().getSharedPreferences("doneSubjects", Context.MODE_PRIVATE)
         editor = preferences.edit()
@@ -105,13 +100,9 @@ class SubjectsFragment : Fragment(R.layout.fragment_subjects), SubjectAdapter.On
         viewModel.dinlenenVeri.observe(viewLifecycleOwner, Observer {
             editor.putInt("doneSub", (it+(preferences.getInt(("doneSub"),0))))
             editor.apply()
-            var a = preferences.getInt("doneSub",0)
-
             subjectDone = ((preferences.getInt("doneSub",0))*100)/listLength
-            //subjectDone = preferences.getInt(("doneSub"),0)
-
             ObjectAnimator.ofInt(binding.subjectsProgressBar,"progress",subjectDone*10)
-                .setDuration(2000)
+                .setDuration(1000)
                 .start()
 
             binding.progressPercent.setText("$subjectDone%")
@@ -202,26 +193,23 @@ class SubjectsFragment : Fragment(R.layout.fragment_subjects), SubjectAdapter.On
                     updateUI(listSubjects)
                     subjectAdapter.mSubject = listSubjects
                     listLength = listSubjects.size
-                            Log.d("yeterrr", "${listLength}")
-                            editor.putInt("sNum",listSubjects.size)
-                            editor.apply()
+                    editor.putInt("sNum",listSubjects.size)
+                    editor.apply()
 
                     if(listLength!=0){
                         subjectDone = ((preferences.getInt("doneSub",0))*100)/listLength
-                        //subjectDone = preferences.getInt("doneSub",0)
                         binding.progressPercent.setText("$subjectDone%")
-
                         ObjectAnimator.ofInt(binding.subjectsProgressBar,"progress",subjectDone*10)
-                            .setDuration(2000)
+                            .setDuration(1000)
                             .start()
                     }
-                else if(listLength == 0){
+                    else if(listLength == 0){
                         editor.putInt("doneSub", 0)
                         editor.apply()
                         subjectDone = preferences.getInt("doneSub",0)
                         binding.progressPercent.setText("0%")
                         ObjectAnimator.ofInt(binding.subjectsProgressBar,"progress",0)
-                            .setDuration(2000)
+                            .setDuration(1000)
                             .start()
                     }
 
