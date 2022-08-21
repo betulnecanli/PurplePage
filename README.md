@@ -1,5 +1,5 @@
 # PurplePage
 📋A Personal Project
 
-![](https://github.com/betulnecanli/PurplePage/blob/master/ScreenGif/giff.gif?raw=true)  
+![](https://im4.ezgif.com/tmp/ezgif-4-d3398470ff.gif)  
 
