@@ -51,7 +51,7 @@ class ProjectViewModel @Inject constructor(
         dao.deleteProject(p)
         projectEventChannel.send(ProjectEvents.ShowUndoDeleteMessage(p))
         if(p.isCheckedP){
-            projectNum = 1
+            projectNum = -1
             dinlenenveriP.value = projectNum
             projectNum = 0
             dinlenenveriP.value = projectNum

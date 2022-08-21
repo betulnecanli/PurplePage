@@ -100,7 +100,10 @@ class SubjectsFragment : Fragment(R.layout.fragment_subjects), SubjectAdapter.On
         viewModel.dinlenenVeri.observe(viewLifecycleOwner, Observer {
             editor.putInt("doneSub", (it+(preferences.getInt(("doneSub"),0))))
             editor.apply()
-            subjectDone = ((preferences.getInt("doneSub",0))*100)/listLength
+            if(listLength != 0){
+                subjectDone = ((preferences.getInt("doneSub",0))*100)/listLength
+
+            }
             ObjectAnimator.ofInt(binding.subjectsProgressBar,"progress",subjectDone*10)
                 .setDuration(1000)
                 .start()
@@ -141,6 +144,10 @@ class SubjectsFragment : Fragment(R.layout.fragment_subjects), SubjectAdapter.On
 
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                     val subject = subjectAdapter.mSubject[viewHolder.adapterPosition]
+                    val x = preferences.getInt("sNum",0)
+                    editor.putInt("sNum",(x-1))
+                    editor.apply()
+                    listLength = preferences.getInt("sNum",0)
                     viewModel.deleteSubject(subject)
                 }
             }).attachToRecyclerView(subjectsRcy)
@@ -161,6 +168,11 @@ class SubjectsFragment : Fragment(R.layout.fragment_subjects), SubjectAdapter.On
                         Snackbar.make(requireView(),
                         "Subject Deleted",
                         Snackbar.LENGTH_LONG).setAction("UNDO"){
+                            val x = preferences.getInt("sNum",0)
+                            editor.putInt("sNum",(x+1))
+                            editor.apply()
+                            listLength =  preferences.getInt("sNum",0)
+
                             viewModel.clickedUndo(event.subject)
                         }.show()
                     }

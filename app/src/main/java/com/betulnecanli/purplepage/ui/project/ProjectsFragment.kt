@@ -5,6 +5,7 @@ import android.content.ClipData
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -90,8 +91,10 @@ class ProjectsFragment : Fragment(R.layout.fragment_projects), ProjectAdapter.On
         viewModel.dinlenenveriP.observe(viewLifecycleOwner, Observer {
             editor.putInt("donePro", (it+(preferences.getInt(("donePro"),0))))
             editor.apply()
-            projectDone = ((preferences.getInt("donePro",0))*100)/pListLength
-            ObjectAnimator.ofInt(binding.projectProgressBar,"progress",projectDone*10)
+            if(pListLength != 0){
+                projectDone = ((preferences.getInt("donePro",0))*100)/pListLength
+            }
+           ObjectAnimator.ofInt(binding.projectProgressBar,"progress",projectDone*10)
                 .setDuration(1000)
                 .start()
             binding.projectPercent.setText("$projectDone%")
@@ -119,6 +122,10 @@ class ProjectsFragment : Fragment(R.layout.fragment_projects), ProjectAdapter.On
 
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                    val project = adapterP.mProject[viewHolder.adapterPosition]
+                    val x = preferences.getInt("pNum",0)
+                    editor.putInt("pNum",(x-1))
+                    editor.apply()
+                    pListLength = preferences.getInt("pNum",0)
                     viewModel.deleteProject(project)
                 }
 
@@ -147,6 +154,10 @@ class ProjectsFragment : Fragment(R.layout.fragment_projects), ProjectAdapter.On
                         ).setAction(
                             "UNDO"
                         ){
+                            val x = preferences.getInt("pNum",0)
+                            editor.putInt("pNum",(x+1))
+                            editor.apply()
+                            pListLength =  preferences.getInt("pNum",0)
                             viewModel.clickUndo(event.p)
                         }.show()
 

@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -92,8 +93,10 @@ class GoalsFragment : Fragment(R.layout.fragment_goals), GoalAdapter.OnItemClick
         viewModel.dinlenenVeriG.observe(viewLifecycleOwner, Observer {
             editor.putInt("doneGoa", (it+(preferences.getInt(("doneGoa"),0))))
             editor.apply()
-            goalDone = ((preferences.getInt("doneGoa",0))*100)/gListLength
-            ObjectAnimator.ofInt(binding.progressBarGoals,"progress",goalDone*10)
+            if(gListLength!=0){
+                goalDone = ((preferences.getInt("doneGoa",0))*100)/gListLength
+            }
+             ObjectAnimator.ofInt(binding.progressBarGoals,"progress",goalDone*10)
                 .setDuration(1000)
                 .start()
             binding.percentGoals.setText("$goalDone%")
@@ -121,7 +124,13 @@ class GoalsFragment : Fragment(R.layout.fragment_goals), GoalAdapter.OnItemClick
 
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                     val goal = adapterG.mGoals[viewHolder.adapterPosition]
+                    val x = preferences.getInt("gNum",0)
+                    editor.putInt("gNum",(x-1))
+                    editor.apply()
+                    gListLength = preferences.getInt("gNum",0)
+                    Log.d("yeterrr", "$gListLength")
                     viewModel.deleteGoal(goal)
+
                 }
 
             }).attachToRecyclerView(recycGoals)
@@ -146,7 +155,12 @@ class GoalsFragment : Fragment(R.layout.fragment_goals), GoalAdapter.OnItemClick
                             "Goal Deleted",
                             Snackbar.LENGTH_LONG
                         ).setAction("UNDO"){
+                            val x = preferences.getInt("gNum",0)
+                            editor.putInt("gNum",(x+1))
+                            editor.apply()
+                            gListLength =  preferences.getInt("gNum",0)
                             viewModel.clickUndo(event.g)
+
                         }.show()
                     }
                 }.exhaustive
@@ -200,6 +214,7 @@ class GoalsFragment : Fragment(R.layout.fragment_goals), GoalAdapter.OnItemClick
         viewModel.searchedGoals.observe(requireActivity()){listGoals->
             updateUI(listGoals)
             adapterG.mGoals = listGoals
+
         }
 
     }

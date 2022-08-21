@@ -36,8 +36,9 @@ class GoalViewModel @Inject constructor(
 
     fun deleteGoal(g : Goals) = viewModelScope.launch {
         daoG.deleteGoal(g)
+        goalEventChannel.send(GoalEvents.ShowUndoDeleteMessage(g))
         if(g.isCheckedG){
-            goalsNum = 1
+            goalsNum = -1
             dinlenenVeriG.value = goalsNum
             goalsNum = 0
             dinlenenVeriG.value = goalsNum
@@ -46,6 +47,7 @@ class GoalViewModel @Inject constructor(
 
     fun onGoalCheckedBoxChanged(g : Goals, isChecked : Boolean) = viewModelScope.launch {
         daoG.updateGoal(g.copy(isCheckedG = isChecked))
+
         if(isChecked){
             goalsNum = 1
             dinlenenVeriG.value = goalsNum
